@@ -13,11 +13,16 @@ public class Odontologo {
         this.matricula = matricula;
     }
 
-    public void mostrarDatosDelOdontologo(){
-        System.out.println("Datos del odontologo " + id + "\n"+
+    public String toString(){
+        return "Datos del odontologo " + id + "\n"+
         "nombre: " + nombre + "\n"+
         "apellido: " + apellido + "\n"+
-        "matricula: " + matricula);
+        "matricula: " + matricula;
+    }
+
+    // getters
+    public Long getId(){
+        return this.id;
     }
 
     public String getNombre(){
@@ -27,4 +32,29 @@ public class Odontologo {
     public String getApellido(){
         return this.apellido;
     }
+
+    public String getMatricula(){
+        return this.matricula;
+    }
+
+    // setters
+
+    /** no estoy seguro si conviene dejar que el id del odontologo se pueda modificar, ya que es un dato unico que lo identifica, pero lo dejo por las dudas
+     * public void setId(Long id){
+     this.id = id;
+     }
+     */
+
+    public void setNombre(String nombre){
+        this.nombre = nombre;
+    }
+
+    public void setApellido(String apellido){
+        this.apellido = apellido;
+    }
+
+    public void setMatricula(String matricula){
+        this.matricula = matricula;
+    }
+
 }

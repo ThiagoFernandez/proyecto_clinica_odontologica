@@ -23,14 +23,19 @@ public class Paciente {
         this.domicilio = domicilio;
     }
 
-    public void mostrarDatosDelPaciente(){
-        System.out.println("Datos del paciente " + id + "\n"+
+    public String toString(){
+        return "Datos del paciente " + id + "\n"+
         "nombre: " + nombre + "\n"+
         "apellido: " + apellido + "\n"+
         "dni: " + dni + "\n"+
         "email: " + email + "\n"+
         "fecha de ingreso: " + fechaIngreso + "\n"+
-        "domicilio: " + domicilio.getCalle() + " " + domicilio.getNumero() + " " + domicilio.getLocalidad() + " " + domicilio.getProvincia());
+        "domicilio: " + domicilio.getCalle() + " " + domicilio.getNumero() + " " + domicilio.getLocalidad() + " " + domicilio.getProvincia();
+    }
+
+    // getters
+    public Long getId(){
+        return this.id;
     }
 
     public String getNombre(){
@@ -40,4 +45,52 @@ public class Paciente {
     public String getApellido(){
         return this.apellido;
     }
+
+    public String getDni(){
+        return this.dni;
+    }
+
+    public String getEmail(){
+        return this.email;
+    }
+
+    public LocalDate getFechaIngreso(){
+        return this.fechaIngreso;
+    }
+
+    public Domicilio getDomicilio(){
+        return this.domicilio;
+    }
+
+    // setters
+
+     /** no estoy seguro si conviene dejar que el id del paciente se pueda modificar, ya que es un dato unico que lo identifica, pero lo dejo por las dudas
+     * public void setId(Long id){
+        this.id = id;
+     }
+     */
+    public void setNombre(String nombre){
+        this.nombre = nombre;
+    }
+
+    public void setApellido(String apellido){
+        this.apellido = apellido;
+    }
+
+    public void setDni(String dni){
+        this.dni = dni;
+    }
+
+    public void setEmail(String email){
+        this.email = email;
+    }
+
+    public void setFechaIngreso(LocalDate fechaIngreso){
+        this.fechaIngreso = fechaIngreso;
+    }
+
+    public void setDomicilio(Domicilio domicilio){
+        this.domicilio = domicilio;
+    }
+
 }
