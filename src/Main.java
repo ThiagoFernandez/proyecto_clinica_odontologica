@@ -9,6 +9,7 @@ public class Main {
         System.out.println(odontologo1);
         System.out.println("--- Los datos del turno han sido cargados exitosamente:");
         System.out.println(turno1);
+        System.out.println("Nombre completo del paciente: " + paciente1.getNombreCompleto());
 
     }
 

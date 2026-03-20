@@ -33,6 +33,11 @@ public class Odontologo {
         return this.apellido;
     }
 
+    public String getNombreCompleto(){
+        return getNombre() + " " + getApellido();
+        // mismo caso q Paciente
+    }
+
     public String getMatricula(){
         return this.matricula;
     }

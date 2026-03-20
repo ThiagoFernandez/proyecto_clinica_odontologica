@@ -33,6 +33,7 @@ public class Paciente {
         "domicilio: " + domicilio.getCalle() + " " + domicilio.getNumero() + " " + domicilio.getLocalidad() + " " + domicilio.getProvincia();
     }
 
+
     // getters
     public Long getId(){
         return this.id;
@@ -44,6 +45,11 @@ public class Paciente {
 
     public String getApellido(){
         return this.apellido;
+    }
+
+    public String getNombreCompleto(){
+        return getNombre() + " " + getApellido();
+        // uso el metodo getNombre y getApellido para en lugar de this.atributo para que si en algun momento se cambia la logica de como se obtiene el nombre o el apellido, el metodo getNombreCompleto siga funcionando correctamente
     }
 
     public String getDni(){
