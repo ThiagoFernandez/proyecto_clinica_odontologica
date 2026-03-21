@@ -1,18 +1,26 @@
 package Modelo;
 
+import java.util.Objects;
+
 public class Odontologo {
+    private static Long contadorId = 1L;
+
     private Long id;
     private String nombre;
     private String apellido;
     private String matricula;
 
-    public Odontologo(Long id, String nombre, String apellido, String matricula ){
-        this.id = id;
+    public Odontologo(String nombre, String apellido, String matricula ){
+        this.id = contadorId++;
         this.nombre = nombre;
         this.apellido = apellido;
         this.matricula = matricula;
     }
-
+    public Odontologo(){
+        this.id = contadorId++;
+        // constructor vacio como pide la consigna
+        // lo voy a terminar usando para poder crear un odontologo sin necesidad de pasarle todos los datos, y luego setearlos uno por uno con inputs
+    }
     public String toString(){
         return "Datos del odontologo " + id + "\n"+
         "nombre: " + nombre + "\n"+
@@ -20,6 +28,21 @@ public class Odontologo {
         "matricula: " + matricula;
     }
 
+    @Override
+    public boolean equals(Object obj){
+        if (this == obj){
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()){
+            return false;
+        }
+        Odontologo other = (Odontologo) obj;
+        return this.matricula != null && this.matricula.equals(other.matricula);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(matricula);
+    }
     // getters
     public Long getId(){
         return this.id;

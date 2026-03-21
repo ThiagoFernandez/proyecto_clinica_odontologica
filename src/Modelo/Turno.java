@@ -3,6 +3,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Turno {
+    private static Long contadorId = 1L;
+
     private Long id;
     private Paciente paciente;
     private Odontologo odontologo;
@@ -10,8 +12,8 @@ public class Turno {
     private LocalTime hora;
     private EstadoTurno estado;
 
-    public Turno(Long id, Paciente paciente, Odontologo odontologo, LocalDate fecha, LocalTime hora, EstadoTurno estado){
-        this.id = id;
+    public Turno(Paciente paciente, Odontologo odontologo, LocalDate fecha, LocalTime hora, EstadoTurno estado){
+        this.id = contadorId++;
         this.paciente = paciente;
         this.odontologo = odontologo;
         this.fecha = fecha;
@@ -26,6 +28,25 @@ public class Turno {
         "Fecha: " + fecha + "\n"+
         "Hora: " + hora + "\n"+
         "Estado: " + estado;
+    }
+
+    public boolean esFuturo(){
+        if (this.fecha == null || this.hora == null) {
+            return false; // Si no se ha establecido la fecha u hora, no se tiene en cuenta
+        }
+        if (this.fecha.isAfter(LocalDate.now())){
+            return true;
+        } else if (this.fecha.isEqual(LocalDate.now()) && this.hora.isAfter(LocalTime.now())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean estaDisponible(){
+        return this.estado == EstadoTurno.PENDIENTE;
+        // no me termina de convencer pero lo pide la consigna, lo ideal seria que el turno se considere disponible si no tiene un paciente asignado
+        // pero el turno no puede existir sin paciente asi que no se si tiene sentido esa logica, lo dejo asi por las dudas
     }
 
     // setters

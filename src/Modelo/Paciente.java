@@ -1,9 +1,12 @@
 package Modelo;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Paciente {
     // Atributos
+    private static Long contadorId = 1L;
+
     private Long id; // unico
     private String nombre;
     private String apellido;
@@ -13,8 +16,8 @@ public class Paciente {
     private Domicilio domicilio;
 
 
-    public Paciente(Long id, String nombre, String apellido, String dni, String email, LocalDate fechaIngreso, Domicilio domicilio){
-        this.id = id;
+    public Paciente(String nombre, String apellido, String dni, String email, LocalDate fechaIngreso, Domicilio domicilio){
+        this.id = contadorId++;
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
@@ -23,6 +26,13 @@ public class Paciente {
         this.domicilio = domicilio;
     }
 
+    public Paciente(){
+        this.id = contadorId++;
+        // constructor vacio como pide la consigna
+        // lo voy a terminar usando para poder crear un paciente sin necesidad de pasarle todos los datos, y luego setearlos uno por uno con inputs
+    }
+
+    @Override
     public String toString(){
         return "Datos del paciente " + id + "\n"+
         "nombre: " + nombre + "\n"+
@@ -33,7 +43,21 @@ public class Paciente {
         "domicilio: " + domicilio.getCalle() + " " + domicilio.getNumero() + " " + domicilio.getLocalidad() + " " + domicilio.getProvincia();
     }
 
-
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Paciente other = (Paciente) obj;
+        return this.dni != null && this.dni.equals(other.dni);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(dni);
+    }
     // getters
     public Long getId(){
         return this.id;

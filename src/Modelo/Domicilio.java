@@ -1,14 +1,16 @@
 package Modelo;
 
 public class Domicilio {
+    private static Long contadorId = 1L;
+
     private Long id;
     private String calle;
     private String numero;
     private String localidad;
     private String provincia;
 
-    public Domicilio(Long id, String calle, String numero, String localidad, String provincia){
-        this.id = id;
+    public Domicilio(String calle, String numero, String localidad, String provincia){
+        this.id = contadorId++;
         this.calle = calle;
         this.numero = numero;
         this.localidad = localidad;
@@ -23,6 +25,11 @@ public class Domicilio {
                 ", localidad='" + localidad + '\'' +
                 ", provincia='" + provincia + '\'' +
                 '}';
+    }
+    public Domicilio(){
+        this.id = contadorId++;
+        // constructor vacio como pide la consigna
+        // lo voy a terminar usando para poder crear un domicilio sin necesidad de pasarle todos los datos, y luego setearlos uno por uno con inputs
     }
 
     // getters
