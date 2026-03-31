@@ -5,11 +5,11 @@ public class Domicilio {
 
     private Long id;
     private String calle;
-    private String numero;
+    private Integer numero;
     private String localidad;
     private String provincia;
 
-    public Domicilio(String calle, String numero, String localidad, String provincia){
+    public Domicilio(String calle, Integer numero, String localidad, String provincia){
         this.id = contadorId++;
         this.calle = calle;
         this.numero = numero;
@@ -46,7 +46,7 @@ public class Domicilio {
         return localidad;
     }
 
-    public String getNumero(){
+    public Integer getNumero(){
         return numero;
     }
 
@@ -69,7 +69,7 @@ public class Domicilio {
         this.localidad = localidad;
     }
 
-    public void setNumero(String numero){
+    public void setNumero(Integer numero){
         this.numero = numero;
     }
 

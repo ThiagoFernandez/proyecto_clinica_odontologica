@@ -8,7 +8,7 @@ public class Main {
 
         System.out.println("Bienvenido a la Clinica Odontologica 'SONRISA FELIZ'");
 
-        Modelo.Paciente paciente1 = new Modelo.Paciente("Thiago", "Procacci", "46871211", "thiagofprocacci@gmail.com", LocalDate.now(), new Modelo.Domicilio("Calle Falsa", "123", "Localidad falsa", "Provincia falsa"));
+        Modelo.Paciente paciente1 = new Modelo.Paciente("Thiago", "Procacci", "46871211", "thiagofprocacci@gmail.com", LocalDate.now(), new Modelo.Domicilio("Calle Falsa", 123, "Localidad falsa", "Provincia falsa"));
         Modelo.Odontologo odontologo1 = new Modelo.Odontologo("Agustin", "Fernandez", "12345");
         Modelo.Turno turno1 = new Modelo.Turno(paciente1, odontologo1, LocalDate.now(), java.time.LocalTime.now(), Modelo.EstadoTurno.PENDIENTE);
 
@@ -83,8 +83,8 @@ public class Main {
         String callePaciente = sc.nextLine();
 
         System.out.print("Número: ");
-        String numeroPaciente = sc.nextLine();
-
+        Integer numeroPaciente = sc.nextInt();
+        sc.nextLine();
         System.out.print("Localidad: ");
         String localidadPaciente = sc.nextLine();
 

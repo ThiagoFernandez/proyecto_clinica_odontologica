@@ -23,7 +23,7 @@ public class Turno {
 
     public String toString(){
         return "Datos del turno " + id + "\n"+
-        "Paciente: " + paciente.getNombre() + " " + paciente.getApellido() + "\n"+
+        "Paciente: " + paciente.getNombreCompleto() + "\n"+
         "Odontologo: " + odontologo.getNombre() + " " + odontologo.getApellido() + "\n"+
         "Fecha: " + fecha + "\n"+
         "Hora: " + hora + "\n"+
