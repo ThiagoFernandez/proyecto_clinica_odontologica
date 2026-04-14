@@ -45,18 +45,18 @@ public class Paciente {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
+        if (this == obj) return true; // mismo objeto en memoria
+
+        if (obj == null || getClass() != obj.getClass()) return false;
+
         Paciente other = (Paciente) obj;
-        return this.dni != null && this.dni.equals(other.dni);
+
+        return java.util.Objects.equals(this.dni, other.dni); // lo cambie porque esto evita el NullPointerException
     }
+
     @Override
     public int hashCode() {
-        return Objects.hash(dni);
+        return java.util.Objects.hash(dni);
     }
     // getters
     public Long getId(){
@@ -122,5 +122,4 @@ public class Paciente {
     public void setDomicilio(Domicilio domicilio){
         this.domicilio = domicilio;
     }
-
 }

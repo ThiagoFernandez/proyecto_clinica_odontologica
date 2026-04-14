@@ -21,6 +21,12 @@ public class Turno {
         this.estado = estado;
     }
 
+    public Turno(){
+        this.id = contadorId++;
+        // constructor vacio como pide la consigna
+        // lo voy a terminar usando para poder crear un turno sin necesidad de pasarle todos los datos, y luego setearlos uno por uno con inputs
+    }
+
     public String toString(){
         return "Datos del turno " + id + "\n"+
         "Paciente: " + paciente.getNombreCompleto() + "\n"+

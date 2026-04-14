@@ -37,7 +37,7 @@ public class Odontologo {
             return false;
         }
         Odontologo other = (Odontologo) obj;
-        return this.matricula != null && this.matricula.equals(other.matricula);
+        return java.util.Objects.equals(this.matricula, other.matricula);
     }
     @Override
     public int hashCode() {
