@@ -18,7 +18,7 @@ public class Main {
                 domicilio1
         );
 
-        Modelo.Odontologo odontologo1 = new Modelo.Odontologo(
+        Modelo.Odontologo odontologo1 = new Modelo.OdontologoGeneral(
                 "Agustin", "Fernandez", "12345"
         );
 
@@ -49,7 +49,7 @@ public class Main {
         paciente2.setEmail("pepegrillo@email.com");
         paciente2.setDomicilio(domicilio2);
 
-        Modelo.Odontologo odontologo2 = new Modelo.Odontologo();
+        Modelo.Odontologo odontologo2 = new Modelo.Endodoncista();
         odontologo2.setNombre("Facundo");
         odontologo2.setApellido("Cravero");
         odontologo2.setMatricula("67890");

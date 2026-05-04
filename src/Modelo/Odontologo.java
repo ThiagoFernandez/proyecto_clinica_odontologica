@@ -2,7 +2,7 @@ package Modelo;
 
 import java.util.Objects;
 
-public class Odontologo {
+public abstract class Odontologo {
     private static Long contadorId = 1L;
 
     private Long id;
@@ -85,4 +85,5 @@ public class Odontologo {
         this.matricula = matricula;
     }
 
+    public abstract int calcularDuracionTurno();
 }
