@@ -94,11 +94,12 @@ public class Paciente {
 
     // setters
 
-     /** no estoy seguro si conviene dejar que el id del paciente se pueda modificar, ya que es un dato unico que lo identifica, pero lo dejo por las dudas
-     * public void setId(Long id){
+     //no estoy seguro si conviene dejar que el id del paciente se pueda modificar, ya que es un dato unico que lo identifica, pero lo dejo por las dudas
+    // al final si lo uso
+     public void setId(Long id){
         this.id = id;
      }
-     */
+
     public void setNombre(String nombre){
         this.nombre = nombre;
     }

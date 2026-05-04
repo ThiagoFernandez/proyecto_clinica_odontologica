@@ -31,7 +31,7 @@ public class ServicioOdontologo {
     }
 
     public List<Odontologo> listarOdontologos(){return repoOdontologo.listar();}
-
+    public List<Odontologo> listarPorEspecialidad(Class<?> especialidad) {return repoOdontologo.buscarPorEspecialidad(especialidad);}
     public void modificarOdontologo(Odontologo odontologo) {
 
         buscarOLanzar(odontologo.getId());

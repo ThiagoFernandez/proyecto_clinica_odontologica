@@ -40,4 +40,14 @@ public class RepositorioOdontologo implements iRepository<Odontologo> {
         }
         return null;
     }
+    // extra
+    public List<Odontologo> buscarPorEspecialidad(Class<?> especialidad) {
+        List<Odontologo> resultado = new ArrayList<>();
+        for (Odontologo o : odontologos.values()) {
+            if (especialidad.isInstance(o)) {
+                resultado.add(o);
+            }
+        }
+        return resultado;
+    }
 }

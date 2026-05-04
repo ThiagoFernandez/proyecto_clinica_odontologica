@@ -43,8 +43,17 @@ public class ServicioTurno {
         return buscarOLanzar(id);
     }
 
-    public void modificarTurno (Turno turno){
-        // no se
+    public void modificarTurno(Long id, LocalDate nuevaFecha, LocalTime nuevaHora) {
+        Turno turno = buscarOLanzar(id);
+        if (turno.getEstado() == EstadoTurno.CANCELADO || turno.getEstado() == EstadoTurno.COMPLETADO)
+            throw new RuntimeException("No se puede modificar un turno cerrado");
+        if (!nuevaFecha.isAfter(LocalDate.now()))
+            throw new RuntimeException("La nueva fecha debe ser futura");
+        if (repoTurno.existeTurno(turno.getOdontologo(), nuevaFecha, nuevaHora))
+            throw new RuntimeException("El odontologo ya tiene turno en ese horario");
+        turno.setLocalDate(nuevaFecha);
+        turno.setLocalTime(nuevaHora);
+        repoTurno.actualizar(turno);
     }
 
     public void eliminarTurno(Long id) {
