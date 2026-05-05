@@ -1,5 +1,6 @@
 package Repositorio;
 
+import Modelo.EstadoTurno;
 import Modelo.Odontologo;
 import Modelo.Paciente;
 import Modelo.Turno;
@@ -67,6 +68,14 @@ public class RepositorioTurno implements iRepository<Turno>{
             }
         }
         return resultados;
+    }
+
+    public List<Turno> buscarPorEstado(EstadoTurno estado) {
+        List<Turno> resultado = new ArrayList<>();
+        for (Turno t : turnos.values()) {
+            if (t.getEstado() == estado) resultado.add(t);
+        }
+        return resultado;
     }
 
     public boolean existeTurno(Odontologo o, LocalDate fecha, LocalTime hora){

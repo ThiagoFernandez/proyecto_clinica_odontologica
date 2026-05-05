@@ -22,12 +22,12 @@ public class Main {
         ServicioOdontologo servicioOdontologo = new ServicioOdontologo(repoOdontologo, repoTurno);
         ServicioTurno servicioTurno = new ServicioTurno(repoTurno, repoPaciente, repoOdontologo);
 
-        // menús
+        // menus
         MenuPaciente menuPaciente = new MenuPaciente(servicioPaciente);
         MenuOdontologo menuOdontologo = new MenuOdontologo(servicioOdontologo);
         MenuTurno menuTurno = new MenuTurno(servicioTurno, servicioPaciente, servicioOdontologo);
 
-        // arrancar
+        // inicio
         new MenuPrincipal(menuPaciente, menuOdontologo, menuTurno).iniciar();
     }
 }

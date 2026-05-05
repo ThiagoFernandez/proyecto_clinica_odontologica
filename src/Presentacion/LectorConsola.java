@@ -9,8 +9,14 @@ public class LectorConsola {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static String leerString(String mensaje) {
-        System.out.print(mensaje);
-        return scanner.nextLine().trim();
+        while (true) {
+            System.out.print(mensaje);
+            String input = scanner.nextLine().trim();
+            if (!input.isEmpty()) {
+                return input;
+            }
+            System.out.println("El campo no puede estar vacio.");
+        }
     }
 
     public static int leerInt(String mensaje) {
@@ -19,7 +25,7 @@ public class LectorConsola {
                 System.out.print(mensaje);
                 return Integer.parseInt(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
-                System.out.println("Ingresá un número válido.");
+                System.out.println("Ingresa un numero valido.");
             }
         }
     }
@@ -30,7 +36,7 @@ public class LectorConsola {
                 System.out.print(mensaje);
                 return Long.parseLong(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
-                System.out.println("Ingresá un número válido.");
+                System.out.println("Ingresa un numero valido.");
             }
         }
     }
@@ -41,7 +47,7 @@ public class LectorConsola {
                 System.out.print(mensaje + " (YYYY-MM-DD): ");
                 return LocalDate.parse(scanner.nextLine().trim());
             } catch (DateTimeParseException e) {
-                System.out.println("Formato inválido. Usá YYYY-MM-DD.");
+                System.out.println("Formato invalido. Usa YYYY-MM-DD.");
             }
         }
     }
@@ -52,7 +58,7 @@ public class LectorConsola {
                 System.out.print(mensaje + " (HH:MM): ");
                 return LocalTime.parse(scanner.nextLine().trim());
             } catch (DateTimeParseException e) {
-                System.out.println("Formato inválido. Usá HH:MM.");
+                System.out.println("Formato invalido. Usa HH:MM.");
             }
         }
     }

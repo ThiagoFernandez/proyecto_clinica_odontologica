@@ -1,6 +1,8 @@
 package Modelo;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Paciente {
@@ -14,6 +16,8 @@ public class Paciente {
     private String email;
     private LocalDate fechaIngreso;
     private Domicilio domicilio;
+    private List<Turno> turnos = new ArrayList<>();
+
 
 
     public Paciente(String nombre, String apellido, String dni, String email, LocalDate fechaIngreso, Domicilio domicilio){
@@ -30,6 +34,15 @@ public class Paciente {
         this.id = contadorId++;
         // constructor vacio como pide la consigna
         // lo voy a terminar usando para poder crear un paciente sin necesidad de pasarle todos los datos, y luego setearlos uno por uno con inputs
+    }
+
+    // lo agrego porque lo pidio el profesore explicitamente y respalda la relacion q mostre en el diagrama de clases
+    public void agregarTurno(Turno turno) {
+        this.turnos.add(turno);
+    }
+
+    public List<Turno> getTurnos() {
+        return turnos;
     }
 
     @Override

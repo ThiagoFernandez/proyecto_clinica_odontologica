@@ -55,4 +55,10 @@ public class RepositorioPaciente implements iRepository<Paciente>{
         }
         return pacientesLocalidad;
     }
+
+    public List<Paciente> listarOrdenadosPorApellido() {
+        List<Paciente> lista = new ArrayList<>(pacientes.values());
+        lista.sort((a, b) -> a.getApellido().compareToIgnoreCase(b.getApellido()));
+        return lista;
+    }
 }

@@ -5,12 +5,14 @@ import Modelo.Odontologo;
 import Modelo.Turno;
 import Repositorio.RepositorioOdontologo;
 import Repositorio.RepositorioTurno;
+import Exception.MatriculaDuplicadaException;
+import Exception.OdontologoNoEncontradoException;
 
 import java.util.List;
 
 public class ServicioOdontologo {
-    private RepositorioOdontologo repoOdontologo;
-    private RepositorioTurno repoTurno;
+    private final RepositorioOdontologo repoOdontologo;
+    private final RepositorioTurno repoTurno;
 
     public ServicioOdontologo(RepositorioOdontologo repoOdontologo, RepositorioTurno repoTurno) {
         this.repoOdontologo = repoOdontologo;
@@ -40,7 +42,7 @@ public class ServicioOdontologo {
         Odontologo otro = repoOdontologo.buscarPorMatricula(odontologo.getMatricula());
 
         if (otro != null && !otro.getId().equals(odontologo.getId())) {
-            throw new RuntimeException("Matricula duplicada");
+            throw new MatriculaDuplicadaException(otro.getMatricula());
         }
 
         repoOdontologo.actualizar(odontologo);
@@ -63,7 +65,7 @@ public class ServicioOdontologo {
     // auxiliar
     private Odontologo buscarOLanzar(Long id) {
         Odontologo odontologo = repoOdontologo.buscarPorId(id);
-        if (odontologo == null) throw new RuntimeException("Odontologo no encontrado");
+        if (odontologo == null) throw new OdontologoNoEncontradoException(id);
         return odontologo;
     }
 }

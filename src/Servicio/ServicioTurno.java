@@ -7,15 +7,19 @@ import Modelo.Turno;
 import Repositorio.RepositorioOdontologo;
 import Repositorio.RepositorioPaciente;
 import Repositorio.RepositorioTurno;
+import Exception.PacienteNoEncontradoException;
+import Exception.OdontologoNoEncontradoException;
+import Exception.TurnoYaReservadoException;
+import Exception.TurnoNoEncontradoException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
 public class ServicioTurno {
-    private RepositorioTurno repoTurno;
-    private RepositorioPaciente repoPaciente;
-    private RepositorioOdontologo repoOdontologo;
+    private final RepositorioTurno repoTurno;
+    private final RepositorioPaciente repoPaciente;
+    private final RepositorioOdontologo repoOdontologo;
 
     public ServicioTurno(RepositorioTurno repoTurno, RepositorioPaciente repoPaciente, RepositorioOdontologo repoOdontologo){
         this.repoTurno = repoTurno;
@@ -25,18 +29,20 @@ public class ServicioTurno {
 
     public void agendarTurno(Paciente p, Odontologo o, LocalDate fecha, LocalTime hora) {
         if (repoPaciente.buscarPorId(p.getId()) == null)
-            throw new RuntimeException("Paciente no encontrado");
+            throw new PacienteNoEncontradoException("No existe este paciente");
         if (repoOdontologo.buscarPorId(o.getId()) == null)
-            throw new RuntimeException("Odontologo no encontrado");
+            throw new OdontologoNoEncontradoException("No existe este odontologo");
         if (!fecha.isAfter(LocalDate.now()))
             throw new RuntimeException("La fecha del turno debe ser futura");
         if (repoTurno.existeTurno(o, fecha, hora))
-            throw new RuntimeException("El odontologo ya tiene turno en ese horario");
+            throw new TurnoYaReservadoException();
 
         //int duracion = o.calcularDuracionTurno(); al final lo dejo en presentacion esto
 
         Turno turno = new Turno(p, o, fecha, hora, EstadoTurno.PENDIENTE);
         repoTurno.guardar(turno);
+        p.agregarTurno(turno); // listo aunque ahora tendria en tres lugares distintos el mismo objeto turno pero bueno, es para otros metodos
+        o.agregarTurno(turno);
     }
 
     public Turno buscarTurno(Long id){
@@ -50,7 +56,7 @@ public class ServicioTurno {
         if (!nuevaFecha.isAfter(LocalDate.now()))
             throw new RuntimeException("La nueva fecha debe ser futura");
         if (repoTurno.existeTurno(turno.getOdontologo(), nuevaFecha, nuevaHora))
-            throw new RuntimeException("El odontologo ya tiene turno en ese horario");
+            throw new TurnoYaReservadoException();
         turno.setLocalDate(nuevaFecha);
         turno.setLocalTime(nuevaHora);
         repoTurno.actualizar(turno);
@@ -67,6 +73,7 @@ public class ServicioTurno {
     public List<Turno> listarPorPaciente(Paciente p) { return repoTurno.buscarPorPaciente(p); }
     public List<Turno> listarPorOdontologo(Odontologo o) { return repoTurno.buscarPorOdontologo(o); }
     public List<Turno> listarPorFecha(LocalDate fecha) { return repoTurno.buscarPorFecha(fecha); }
+    public List<Turno> listarPorEstado(EstadoTurno estado) {return repoTurno.buscarPorEstado(estado);}
 
     // podria hacer un solo metodo y pasarle otro parametro para no tener q escribir lo mismo pero cambiando el estado aunque para el usuario debe ser mas facil asi como esta
     public void cancelarTurno(Long id){
@@ -90,7 +97,7 @@ public class ServicioTurno {
     // auxiliar
     private Turno buscarOLanzar(Long id) {
         Turno turno = repoTurno.buscarPorId(id);
-        if (turno == null) throw new RuntimeException("Turno no encontrado");
+        if (turno == null) throw new TurnoNoEncontradoException(id);
         return turno;
     }
 }

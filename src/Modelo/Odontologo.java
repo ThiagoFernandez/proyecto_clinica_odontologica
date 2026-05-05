@@ -1,5 +1,7 @@
 package Modelo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public abstract class Odontologo {
@@ -9,6 +11,7 @@ public abstract class Odontologo {
     private String nombre;
     private String apellido;
     private String matricula;
+    private List<Turno> turnos = new ArrayList<>();
 
     public Odontologo(String nombre, String apellido, String matricula ){
         this.id = contadorId++;
@@ -21,6 +24,15 @@ public abstract class Odontologo {
         // constructor vacio como pide la consigna
         // lo voy a terminar usando para poder crear un odontologo sin necesidad de pasarle todos los datos, y luego setearlos uno por uno con inputs
     }
+
+    public void agregarTurno(Turno turno) { // misma logica q en Paciente
+        this.turnos.add(turno);
+    }
+
+    public List<Turno> getTurnos() {
+        return turnos;
+    }
+
     public String toString(){
         return "Datos del odontologo " + id + "\n"+
         "nombre: " + nombre + "\n"+

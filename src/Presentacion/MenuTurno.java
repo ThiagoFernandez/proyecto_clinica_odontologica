@@ -1,5 +1,6 @@
 package Presentacion;
 
+import Modelo.EstadoTurno;
 import Modelo.Odontologo;
 import Modelo.Paciente;
 import Modelo.Turno;
@@ -12,9 +13,9 @@ import java.time.LocalTime;
 import java.util.List;
 
 public class MenuTurno {
-    private ServicioTurno servicioTurno;
-    private ServicioPaciente servicioPaciente;
-    private ServicioOdontologo servicioOdontologo;
+    private final ServicioTurno servicioTurno;
+    private final ServicioPaciente servicioPaciente;
+    private final ServicioOdontologo servicioOdontologo;
 
     public MenuTurno(ServicioTurno servicioTurno, ServicioPaciente servicioPaciente, ServicioOdontologo servicioOdontologo) {
         this.servicioTurno = servicioTurno;
@@ -29,7 +30,7 @@ public class MenuTurno {
             System.out.println("2. Buscar turno por ID");
             System.out.println("3. Listar todos los turnos");
             System.out.println("4. Listar turnos por paciente");
-            System.out.println("5. Listar turnos por odontólogo");
+            System.out.println("5. Listar turnos por odontologo");
             System.out.println("6. Listar turnos por fecha");
             System.out.println("7. Confirmar turno");
             System.out.println("8. Cancelar turno");
@@ -38,7 +39,7 @@ public class MenuTurno {
             System.out.println("11. Eliminar turno");
             System.out.println("0. Volver");
 
-            int opcion = LectorConsola.leerInt("Opción: ");
+            int opcion = LectorConsola.leerInt("Opcion: ");
             switch (opcion) {
                 case 1 -> agendar();
                 case 2 -> buscar();
@@ -46,31 +47,31 @@ public class MenuTurno {
                 case 4 -> listarPorPaciente();
                 case 5 -> listarPorOdontologo();
                 case 6 -> listarPorFecha();
-                case 7 -> confirmar();
-                case 8 -> cancelar();
-                case 9 -> completar();
-                case 10 -> modificar();
-                case 11 -> eliminar();
+                case 7 -> listarPorEstado();
+                case 8 -> confirmar();
+                case 9 -> cancelar();
+                case 10 -> completar();
+                case 11 -> modificar();
+                case 12 -> eliminar();
                 case 0 -> { return; }
-                default -> System.out.println("Opción inválida.");
+                default -> System.out.println("Opcion invalida.");
             }
         }
     }
 
     private void agendar() {
-        // primero mostramos los pacientes y odontólogos disponibles para que el usuario sepa qué IDs existen
         System.out.println("\n-- Pacientes registrados --");
         servicioPaciente.listarPacientes().forEach(p ->
                 System.out.println("ID: " + p.getId() + " | " + p.getNombreCompleto() + " | DNI: " + p.getDni())
         );
 
-        System.out.println("\n-- Odontólogos registrados --");
+        System.out.println("\n-- Odontologos registrados --");
         servicioOdontologo.listarOdontologos().forEach(o ->
                 System.out.println("ID: " + o.getId() + " | " + o.getNombreCompleto() + " | Mat: " + o.getMatricula())
         );
 
         Long idPaciente = LectorConsola.leerLong("\nID del paciente: ");
-        Long idOdontologo = LectorConsola.leerLong("ID del odontólogo: ");
+        Long idOdontologo = LectorConsola.leerLong("ID del odontologo: ");
         LocalDate fecha = LectorConsola.leerFecha("Fecha del turno");
         LocalTime hora = LectorConsola.leerHora("Hora del turno");
 
@@ -79,7 +80,7 @@ public class MenuTurno {
             Odontologo odontologo = servicioOdontologo.buscarOdontologo(idOdontologo);
             servicioTurno.agendarTurno(paciente, odontologo, fecha, hora);
             System.out.println("Turno agendado correctamente.");
-            System.out.println("Duración estimada: " + odontologo.calcularDuracionTurno() + " minutos.");
+            System.out.println("Duracion estimada: " + odontologo.calcularDuracionTurno() + " minutos.");
         } catch (RuntimeException e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -127,12 +128,12 @@ public class MenuTurno {
     }
 
     private void listarPorOdontologo() {
-        Long id = LectorConsola.leerLong("ID del odontólogo: ");
+        Long id = LectorConsola.leerLong("ID del odontologo: ");
         try {
             Odontologo odontologo = servicioOdontologo.buscarOdontologo(id);
             List<Turno> turnos = servicioTurno.listarPorOdontologo(odontologo);
             if (turnos.isEmpty()) {
-                System.out.println("El odontólogo no tiene turnos.");
+                System.out.println("El odontologo no tiene turnos.");
                 return;
             }
             turnos.forEach(t -> System.out.println(
@@ -158,6 +159,35 @@ public class MenuTurno {
         ));
     }
 
+    private void listarPorEstado() {
+        System.out.println("1. Pendientes");
+        System.out.println("2. Confirmados");
+        System.out.println("3. Cancelados");
+        System.out.println("4. Completados");
+        int op = LectorConsola.leerInt("Opcion: ");
+
+        EstadoTurno estado = switch (op) {
+            case 1 -> EstadoTurno.PENDIENTE;
+            case 2 -> EstadoTurno.CONFIRMADO;
+            case 3 -> EstadoTurno.CANCELADO;
+            case 4 -> EstadoTurno.COMPLETADO;
+            default -> { System.out.println("Opcion invalida."); yield null; }
+        };
+
+        if (estado == null) return;
+
+        List<Turno> turnos = servicioTurno.listarPorEstado(estado);
+        if (turnos.isEmpty()) {
+            System.out.println("No hay turnos con ese estado.");
+            return;
+        }
+        turnos.forEach(t -> System.out.println(
+                        "ID: " + t.getId() + " | " + t.getPaciente().getNombreCompleto() +
+                        " | " + t.getOdontologo().getNombreCompleto() +
+                        " | " + t.getFecha() + " " + t.getHora()
+        ));
+    }
+
     private void confirmar() {
         Long id = LectorConsola.leerLong("ID del turno: ");
         try {
@@ -170,9 +200,9 @@ public class MenuTurno {
 
     private void cancelar() {
         Long id = LectorConsola.leerLong("ID del turno: ");
-        String confirmar = LectorConsola.leerString("¿Confirmar cancelación? (s/n): ");
+        String confirmar = LectorConsola.leerString("Confirmar cancelacion? (s/n): ");
         if (!confirmar.equalsIgnoreCase("s")) {
-            System.out.println("Operación cancelada.");
+            System.out.println("Operacion cancelada.");
             return;
         }
         try {
@@ -207,9 +237,9 @@ public class MenuTurno {
 
     private void eliminar() {
         Long id = LectorConsola.leerLong("ID del turno: ");
-        String confirmar = LectorConsola.leerString("¿Confirmar eliminación? (s/n): ");
+        String confirmar = LectorConsola.leerString("Confirmar eliminacion? (s/n): ");
         if (!confirmar.equalsIgnoreCase("s")) {
-            System.out.println("Operación cancelada.");
+            System.out.println("Operacion cancelada.");
             return;
         }
         try {
