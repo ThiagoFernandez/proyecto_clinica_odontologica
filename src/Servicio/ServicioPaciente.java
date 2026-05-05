@@ -74,4 +74,8 @@ public class ServicioPaciente { // encargado de pacientes
 
         repoPaciente.eliminar(id);
     }
+
+    public List<Paciente> listarPorLocalidad(String localidad){
+        return repoPaciente.listarPorLocalidad(localidad);
+    }
 }

@@ -19,8 +19,9 @@ public class MenuPaciente {
             System.out.println("1. Registrar paciente");
             System.out.println("2. Buscar paciente por ID");
             System.out.println("3. Listar pacientes");
-            System.out.println("4. Modificar paciente");
-            System.out.println("5. Eliminar paciente");
+            System.out.println("4. Listar pacientes por localidad");
+            System.out.println("5. Modificar paciente");
+            System.out.println("6. Eliminar paciente");
             System.out.println("0. Volver");
 
             int opcion = LectorConsola.leerInt("Opción: ");
@@ -28,8 +29,9 @@ public class MenuPaciente {
                 case 1 -> registrar();
                 case 2 -> buscar();
                 case 3 -> listar();
-                case 4 -> modificar();
-                case 5 -> eliminar();
+                case 4 -> listarPorLocalidad();
+                case 5 -> modificar();
+                case 6 -> eliminar();
                 case 0 -> { return; }
                 default -> System.out.println("Opción inválida.");
             }
@@ -74,6 +76,18 @@ public class MenuPaciente {
             System.out.println("Paciente id: " + paciente.getId() + "\nNombre y apellido: " + paciente.getNombreCompleto());
         }
     }
+
+    private void listarPorLocalidad(){
+        String localidad = LectorConsola.leerString("Localidad: ");
+
+        List<Paciente> pacientes = servicioPaciente.listarPorLocalidad(localidad);
+        if (pacientes.isEmpty()){
+            System.out.println("No hay pacientes en esa localidad");
+        } else{
+            pacientes.forEach(paciente -> System.out.println("ID: "+paciente.getId()+" --- DNI: "+paciente.getDni()+" --- Nombre completo: "+paciente.getNombreCompleto()));
+        }
+    }
+
     private void modificar() {
         Long id = LectorConsola.leerLong("ID del paciente a modificar: ");
         String nombre = LectorConsola.leerString("Nombre nuevo: ");

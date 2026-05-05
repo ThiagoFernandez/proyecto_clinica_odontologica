@@ -1,5 +1,6 @@
 package Repositorio;
 
+import Modelo.Domicilio;
 import Modelo.Paciente;
 
 import java.util.ArrayList;
@@ -43,4 +44,15 @@ public class RepositorioPaciente implements iRepository<Paciente>{
        }
        return null;
    }
+
+    public List<Paciente> listarPorLocalidad(String localidad) {
+        List<Paciente> pacientesLocalidad = new ArrayList<>();
+        for (Paciente p : pacientes.values()) {
+            Domicilio dom = p.getDomicilio();
+            if (dom != null && dom.getLocalidad() != null && dom.getLocalidad().equals(localidad)) { // para evitar pacientes con Domicilio null aunque no tendria q haber ninguno null ya q uso el constructor con parametros
+                pacientesLocalidad.add(p);
+            }
+        }
+        return pacientesLocalidad;
+    }
 }
