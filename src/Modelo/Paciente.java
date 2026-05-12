@@ -24,7 +24,7 @@ public class Paciente {
         this.id = contadorId++;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.dni = dni;
+        setDni(dni);
         this.email = email;
         this.fechaIngreso = fechaIngreso;
         this.domicilio = domicilio;
@@ -121,7 +121,10 @@ public class Paciente {
         this.apellido = apellido;
     }
 
-    public void setDni(String dni){
+    public void setDni(String dni) { // podria hacer una exp solo para esto
+        if (dni == null || !dni.matches("\\d{7,8}")) {
+            throw new RuntimeException("DNI invalido. Debe tener 7 u 8 digitos numericos.");
+        }
         this.dni = dni;
     }
 

@@ -23,7 +23,7 @@ public class ServicioOdontologo {
         Odontologo existente = repoOdontologo.buscarPorMatricula(odontologo.getMatricula());
 
         if (existente!=null) {
-            throw new RuntimeException("Matricula duplicada");
+            throw new MatriculaDuplicadaException(odontologo.getMatricula());
         }
         repoOdontologo.guardar(odontologo);
     }
