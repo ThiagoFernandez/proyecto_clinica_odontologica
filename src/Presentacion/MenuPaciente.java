@@ -6,6 +6,7 @@ import Modelo.Turno;
 import Servicio.ServicioPaciente;
 import java.time.LocalDate;
 import java.util.List;
+import Exception.ClinicaException;
 
 public class MenuPaciente {
     private final ServicioPaciente servicioPaciente;
@@ -61,8 +62,10 @@ public class MenuPaciente {
         try {
             servicioPaciente.registrarPaciente(paciente);
             System.out.println("Paciente registrado correctamente.");
+        } catch (ClinicaException e) {
+            System.out.println("[" + e.getCodigo() + "] " + e.getMessage());
         } catch (RuntimeException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error inesperado: " + e.getMessage());
         }
     }
 
@@ -71,8 +74,10 @@ public class MenuPaciente {
         try {
             Paciente paciente = servicioPaciente.buscarPaciente(id);
             System.out.println(paciente.toString());
+        } catch (ClinicaException e) {
+            System.out.println("[" + e.getCodigo() + "] " + e.getMessage());
         } catch (RuntimeException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error inesperado: " + e.getMessage());
         }
     }
 
@@ -115,8 +120,10 @@ public class MenuPaciente {
             turnos.forEach(t -> System.out.println(
                     "ID: " + t.getId() + " | " + t.getFecha() + " " + t.getHora() + " | " + t.getEstado()
             ));
+        } catch (ClinicaException e) {
+            System.out.println("[" + e.getCodigo() + "] " + e.getMessage());
         } catch (RuntimeException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error inesperado: " + e.getMessage());
         }
     }
 
@@ -138,8 +145,10 @@ public class MenuPaciente {
         try {
             servicioPaciente.modificarPaciente(paciente);
             System.out.println("Paciente modificado correctamente.");
+        } catch (ClinicaException e) {
+            System.out.println("[" + e.getCodigo() + "] " + e.getMessage());
         } catch (RuntimeException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error inesperado: " + e.getMessage());
         }
     }
 
@@ -163,8 +172,10 @@ public class MenuPaciente {
             }
             servicioPaciente.eliminarPaciente(id);
             System.out.println("Paciente eliminado correctamente.");
+        } catch (ClinicaException e) {
+            System.out.println("[" + e.getCodigo() + "] " + e.getMessage());
         } catch (RuntimeException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error inesperado: " + e.getMessage());
         }
     }
 }

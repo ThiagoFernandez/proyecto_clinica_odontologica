@@ -3,6 +3,7 @@ package Repositorio;
 import Modelo.Odontologo;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class RepositorioOdontologo implements iRepository<Odontologo> {
     Map<Long, Odontologo> odontologos = new HashMap<>();
@@ -33,21 +34,15 @@ public class RepositorioOdontologo implements iRepository<Odontologo> {
     }
 
     public Odontologo buscarPorMatricula(String matricula){
-        for (Odontologo o: odontologos.values()){
-            if (Objects.equals(o.getMatricula(), matricula)) {
-                return o;
-            }
-        }
-        return null;
+        return odontologos.values().stream()
+                .filter(o -> Objects.equals(o.getMatricula(), matricula))
+                .findFirst()
+                .orElse(null);
     }
-    // extra
+
     public List<Odontologo> buscarPorEspecialidad(Class<?> especialidad) {
-        List<Odontologo> resultado = new ArrayList<>();
-        for (Odontologo o : odontologos.values()) {
-            if (especialidad.isInstance(o)) {
-                resultado.add(o);
-            }
-        }
-        return resultado;
+        return odontologos.values().stream()
+                .filter(especialidad::isInstance)
+                .collect(Collectors.toList());
     }
 }

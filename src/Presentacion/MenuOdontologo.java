@@ -2,7 +2,7 @@ package Presentacion;
 
 import Modelo.*;
 import Servicio.ServicioOdontologo;
-
+import Exception.ClinicaException;
 import java.util.List;
 
 public class MenuOdontologo {
@@ -66,8 +66,10 @@ public class MenuOdontologo {
         try {
             servicioOdontologo.registrarOdontologo(odontologo);
             System.out.println("Odontologo registrado correctamente.");
+        } catch (ClinicaException e) {
+            System.out.println("[" + e.getCodigo() + "] " + e.getMessage());
         } catch (RuntimeException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error inesperado: " + e.getMessage());
         }
     }
 
@@ -76,8 +78,10 @@ public class MenuOdontologo {
         try{
             Odontologo odontologo = servicioOdontologo.buscarOdontologo(id);
             System.out.println(odontologo);
-        } catch (RuntimeException e){
-            System.out.println("Error: " + e.getMessage());
+        } catch (ClinicaException e) {
+            System.out.println("[" + e.getCodigo() + "] " + e.getMessage());
+        } catch (RuntimeException e) {
+            System.out.println("Error inesperado: " + e.getMessage());
         }
     }
 
@@ -127,8 +131,10 @@ public class MenuOdontologo {
                     "ID: " + t.getId() + " | " + t.getPaciente().getNombreCompleto() +
                             " | " + t.getFecha() + " " + t.getHora() + " | " + t.getEstado()
             ));
+        } catch (ClinicaException e) {
+            System.out.println("[" + e.getCodigo() + "] " + e.getMessage());
         } catch (RuntimeException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error inesperado: " + e.getMessage());
         }
     }
 
@@ -158,8 +164,10 @@ public class MenuOdontologo {
         try {
             servicioOdontologo.modificarOdontologo(odontologo);
             System.out.println("Odontologo modificado correctamente.");
+        } catch (ClinicaException e) {
+            System.out.println("[" + e.getCodigo() + "] " + e.getMessage());
         } catch (RuntimeException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error inesperado: " + e.getMessage());
         }
     }
 
@@ -173,8 +181,10 @@ public class MenuOdontologo {
         try {
             servicioOdontologo.eliminarOdontologo(id);
             System.out.println("Odontologo eliminado correctamente.");
+        } catch (ClinicaException e) {
+            System.out.println("[" + e.getCodigo() + "] " + e.getMessage());
         } catch (RuntimeException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error inesperado: " + e.getMessage());
         }
     }
 }

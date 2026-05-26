@@ -7,6 +7,7 @@ import Repositorio.RepositorioOdontologo;
 import Repositorio.RepositorioTurno;
 import Exception.MatriculaDuplicadaException;
 import Exception.OdontologoNoEncontradoException;
+import Exception.ClinicaException;
 
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class ServicioOdontologo {
 
         for (Turno t: turnos){
             if(t.esFuturo() && t.getEstado()!= EstadoTurno.CANCELADO){
-                throw new RuntimeException("El odontologo tiene turnos futuros");
+                throw new ClinicaException("El odontologo tiene turnos futuros activos", 206);
             }
         }
 

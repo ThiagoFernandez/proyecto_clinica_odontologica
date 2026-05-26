@@ -8,6 +8,7 @@ import Repositorio.RepositorioTurno;
 import java.util.List;
 import Exception.DniDuplicadoException;
 import Exception.PacienteNoEncontradoException;
+import Exception.ClinicaException;
 
 public class ServicioPaciente { // encargado de pacientes
     private final RepositorioPaciente repoPaciente;
@@ -76,7 +77,7 @@ public class ServicioPaciente { // encargado de pacientes
 
         for (Turno t : turnos) {
             if (t.esFuturo() && t.getEstado()!= EstadoTurno.CANCELADO) {
-                throw new RuntimeException("El paciente tiene turnos futuros");
+                throw new ClinicaException("El paciente tiene turnos futuros activos", 207);
             }
         }
 

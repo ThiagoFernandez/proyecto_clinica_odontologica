@@ -7,7 +7,7 @@ import Modelo.Turno;
 import Servicio.ServicioOdontologo;
 import Servicio.ServicioPaciente;
 import Servicio.ServicioTurno;
-
+import Exception.ClinicaException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -32,11 +32,13 @@ public class MenuTurno {
             System.out.println("4. Listar turnos por paciente");
             System.out.println("5. Listar turnos por odontologo");
             System.out.println("6. Listar turnos por fecha");
-            System.out.println("7. Confirmar turno");
-            System.out.println("8. Cancelar turno");
-            System.out.println("9. Completar turno");
-            System.out.println("10. Modificar turno");
-            System.out.println("11. Eliminar turno");
+            System.out.println("7. Listar por estado");
+            System.out.println("8. Listar por rango de fecha");
+            System.out.println("9. Confirmar turno");
+            System.out.println("10. Cancelar turno");
+            System.out.println("11. Completar turno");
+            System.out.println("12. Modificar turno");
+            System.out.println("13. Eliminar turno");
             System.out.println("0. Volver");
 
             int opcion = LectorConsola.leerInt("Opcion: ");
@@ -48,11 +50,12 @@ public class MenuTurno {
                 case 5 -> listarPorOdontologo();
                 case 6 -> listarPorFecha();
                 case 7 -> listarPorEstado();
-                case 8 -> confirmar();
-                case 9 -> cancelar();
-                case 10 -> completar();
-                case 11 -> modificar();
-                case 12 -> eliminar();
+                case 8 -> listarPorRangoFechas();
+                case 9 -> confirmar();
+                case 10 -> cancelar();
+                case 11 -> completar();
+                case 12 -> modificar();
+                case 13 -> eliminar();
                 case 0 -> { return; }
                 default -> System.out.println("Opcion invalida.");
             }
@@ -81,8 +84,10 @@ public class MenuTurno {
             servicioTurno.agendarTurno(paciente, odontologo, fecha, hora);
             System.out.println("Turno agendado correctamente.");
             System.out.println("Duracion estimada: " + odontologo.calcularDuracionTurno() + " minutos.");
+        } catch (ClinicaException e) {
+            System.out.println("[" + e.getCodigo() + "] " + e.getMessage());
         } catch (RuntimeException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error inesperado: " + e.getMessage());
         }
     }
 
@@ -91,8 +96,10 @@ public class MenuTurno {
         try {
             Turno turno = servicioTurno.buscarTurno(id);
             System.out.println(turno);
+        } catch (ClinicaException e) {
+            System.out.println("[" + e.getCodigo() + "] " + e.getMessage());
         } catch (RuntimeException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error inesperado: " + e.getMessage());
         }
     }
 
@@ -122,8 +129,10 @@ public class MenuTurno {
             turnos.forEach(t -> System.out.println(
                     "ID: " + t.getId() + " | " + t.getFecha() + " " + t.getHora() + " | " + t.getEstado()
             ));
+        } catch (ClinicaException e) {
+            System.out.println("[" + e.getCodigo() + "] " + e.getMessage());
         } catch (RuntimeException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error inesperado: " + e.getMessage());
         }
     }
 
@@ -140,8 +149,10 @@ public class MenuTurno {
                     "ID: " + t.getId() + " | " + t.getPaciente().getNombreCompleto() +
                             " | " + t.getFecha() + " " + t.getHora() + " | " + t.getEstado()
             ));
+        } catch (ClinicaException e) {
+            System.out.println("[" + e.getCodigo() + "] " + e.getMessage());
         } catch (RuntimeException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error inesperado: " + e.getMessage());
         }
     }
 
@@ -188,13 +199,30 @@ public class MenuTurno {
         ));
     }
 
+    private void listarPorRangoFechas() {
+        LocalDate desde = LectorConsola.leerFecha("Desde");
+        LocalDate hasta = LectorConsola.leerFecha("Hasta");
+        List<Turno> turnos = servicioTurno.listarPorRangoFechas(desde, hasta);
+        if (turnos.isEmpty()) {
+            System.out.println("No hay turnos en ese rango de fechas.");
+            return;
+        }
+        turnos.forEach(t -> System.out.println(
+                "ID: " + t.getId() + " | " + t.getPaciente().getNombreCompleto() +
+                        " | " + t.getOdontologo().getNombreCompleto() +
+                        " | " + t.getFecha() + " " + t.getHora() + " | " + t.getEstado()
+        ));
+    }
+
     private void confirmar() {
         Long id = LectorConsola.leerLong("ID del turno: ");
         try {
             servicioTurno.confirmarTurno(id);
             System.out.println("Turno confirmado.");
+        } catch (ClinicaException e) {
+            System.out.println("[" + e.getCodigo() + "] " + e.getMessage());
         } catch (RuntimeException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error inesperado: " + e.getMessage());
         }
     }
 
@@ -208,8 +236,10 @@ public class MenuTurno {
         try {
             servicioTurno.cancelarTurno(id);
             System.out.println("Turno cancelado.");
+        } catch (ClinicaException e) {
+            System.out.println("[" + e.getCodigo() + "] " + e.getMessage());
         } catch (RuntimeException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error inesperado: " + e.getMessage());
         }
     }
 
@@ -218,8 +248,10 @@ public class MenuTurno {
         try {
             servicioTurno.completarTurno(id);
             System.out.println("Turno completado.");
+        } catch (ClinicaException e) {
+            System.out.println("[" + e.getCodigo() + "] " + e.getMessage());
         } catch (RuntimeException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error inesperado: " + e.getMessage());
         }
     }
 
@@ -230,8 +262,10 @@ public class MenuTurno {
         try {
             servicioTurno.modificarTurno(id, nuevaFecha, nuevaHora);
             System.out.println("Turno modificado correctamente.");
+        } catch (ClinicaException e) {
+            System.out.println("[" + e.getCodigo() + "] " + e.getMessage());
         } catch (RuntimeException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error inesperado: " + e.getMessage());
         }
     }
 
@@ -245,8 +279,10 @@ public class MenuTurno {
         try {
             servicioTurno.eliminarTurno(id);
             System.out.println("Turno eliminado.");
+        } catch (ClinicaException e) {
+            System.out.println("[" + e.getCodigo() + "] " + e.getMessage());
         } catch (RuntimeException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error inesperado: " + e.getMessage());
         }
     }
 }

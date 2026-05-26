@@ -11,6 +11,8 @@ import Exception.PacienteNoEncontradoException;
 import Exception.OdontologoNoEncontradoException;
 import Exception.TurnoYaReservadoException;
 import Exception.TurnoNoEncontradoException;
+import Exception.DatoInvalidoException;
+import Exception.ClinicaException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -33,7 +35,7 @@ public class ServicioTurno {
         if (repoOdontologo.buscarPorId(o.getId()) == null)
             throw new OdontologoNoEncontradoException("No existe este odontologo");
         if (!fecha.isAfter(LocalDate.now()))
-            throw new RuntimeException("La fecha del turno debe ser futura");
+            throw new DatoInvalidoException("fecha", " debe ser futura");
         if (repoTurno.existeTurno(o, fecha, hora))
             throw new TurnoYaReservadoException();
 
@@ -52,9 +54,9 @@ public class ServicioTurno {
     public void modificarTurno(Long id, LocalDate nuevaFecha, LocalTime nuevaHora) {
         Turno turno = buscarOLanzar(id);
         if (turno.getEstado() == EstadoTurno.CANCELADO || turno.getEstado() == EstadoTurno.COMPLETADO)
-            throw new RuntimeException("No se puede modificar un turno cerrado");
+            throw new ClinicaException("No se puede modificar un turno cerrado", 204);
         if (!nuevaFecha.isAfter(LocalDate.now()))
-            throw new RuntimeException("La nueva fecha debe ser futura");
+            throw new DatoInvalidoException("fecha", "debe ser futura");
         if (repoTurno.existeTurno(turno.getOdontologo(), nuevaFecha, nuevaHora))
             throw new TurnoYaReservadoException();
         turno.setLocalDate(nuevaFecha);
@@ -65,7 +67,7 @@ public class ServicioTurno {
     public void eliminarTurno(Long id) {
         Turno turno = buscarOLanzar(id);
         if (turno.getEstado() == EstadoTurno.PENDIENTE || turno.getEstado() == EstadoTurno.CONFIRMADO)
-            throw new RuntimeException("No se puede eliminar un turno activo. Cancelalo primero.");
+            throw new ClinicaException("No se puede eliminar un turno activo. Cancelalo primero.", 205);
         repoTurno.eliminar(id);
     }
 
@@ -93,6 +95,12 @@ public class ServicioTurno {
         turno.setEstado(EstadoTurno.COMPLETADO);
         repoTurno.actualizar(turno);
     }
+
+    public List<Turno> listarPorRangoFechas(LocalDate desde, LocalDate hasta) {
+        return repoTurno.buscarPorRangoFechas(desde, hasta);
+    }
+
+
 
     // auxiliar
     private Turno buscarOLanzar(Long id) {

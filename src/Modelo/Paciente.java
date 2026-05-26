@@ -4,8 +4,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import Exception.DatoInvalidoException;
 
-public class Paciente {
+public class Paciente implements Comparable<Paciente> {
     // Atributos
     private static Long contadorId = 1L;
 
@@ -25,7 +26,7 @@ public class Paciente {
         this.nombre = nombre;
         this.apellido = apellido;
         setDni(dni);
-        this.email = email;
+        setEmail(email);
         this.fechaIngreso = fechaIngreso;
         this.domicilio = domicilio;
     }
@@ -43,6 +44,15 @@ public class Paciente {
 
     public List<Turno> getTurnos() {
         return turnos;
+    }
+
+    @Override
+    public int compareTo(Paciente otro) {
+        int comparacionApellido = this.apellido.compareToIgnoreCase(otro.apellido);
+        if (comparacionApellido != 0) {
+            return comparacionApellido;
+        }
+        return this.nombre.compareToIgnoreCase(otro.nombre);
     }
 
     @Override
@@ -123,12 +133,15 @@ public class Paciente {
 
     public void setDni(String dni) { // podria hacer una exp solo para esto
         if (dni == null || !dni.matches("\\d{7,8}")) {
-            throw new RuntimeException("DNI invalido. Debe tener 7 u 8 digitos numericos.");
+            throw new DatoInvalidoException("DNI", " invalido. Debe tener 7 u 8 digitos numericos.");
         }
         this.dni = dni;
     }
 
-    public void setEmail(String email){
+    public void setEmail(String email) {
+        if (email == null || !email.contains("@")) {
+            throw new DatoInvalidoException("email", "debe contener @");
+        }
         this.email = email;
     }
 

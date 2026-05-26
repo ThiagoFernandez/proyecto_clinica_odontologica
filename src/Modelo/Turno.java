@@ -2,7 +2,7 @@ package Modelo;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Turno {
+public class Turno implements Comparable<Turno>{
     private static Long contadorId = 1L;
 
     private Long id;
@@ -53,6 +53,15 @@ public class Turno {
         return this.estado == EstadoTurno.PENDIENTE;
         // no me termina de convencer pero lo pide la consigna, lo ideal seria que el turno se considere disponible si no tiene un paciente asignado
         // pero el turno no puede existir sin paciente asi que no se si tiene sentido esa logica, lo dejo asi por las dudas
+    }
+
+    @Override
+    public int compareTo(Turno otro) {
+        int comparacionFecha = this.fecha.compareTo(otro.fecha);
+        if (comparacionFecha != 0) {
+            return comparacionFecha;
+        }
+        return this.hora.compareTo(otro.hora);
     }
 
     // setters

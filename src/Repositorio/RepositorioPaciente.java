@@ -3,62 +3,54 @@ package Repositorio;
 import Modelo.Domicilio;
 import Modelo.Paciente;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class RepositorioPaciente implements iRepository<Paciente>{
     Map<Long, Paciente> pacientes = new HashMap<>();
 
-   @Override
-    public void guardar(Paciente obj){ // despues tendria q agregar una validacion para q no hayan dos pacientes con todos los datos iguales a excepcion del id
-       pacientes.put(obj.getId(), obj);
-   }
+    @Override
+    public void guardar(Paciente obj){
+        pacientes.put(obj.getId(), obj);
+    }
 
-   @Override
-    public Paciente buscarPorId(Long id){ // dar una validacion de si existe el id para evitar exepciones
-       return pacientes.get(id);
-   }
+    @Override
+    public Paciente buscarPorId(Long id){
+        return pacientes.get(id);
+    }
 
-   @Override
-    public void actualizar(Paciente obj){ // podria validar q los datos no sean identicos pero no seria ningun problema q lo sean
-       pacientes.put(obj.getId(), obj);
-   }
+    @Override
+    public void actualizar(Paciente obj){
+        pacientes.put(obj.getId(), obj);
+    }
 
-   @Override
-    public void eliminar(Long id){ // lo mismo, validar q exista la key para evitar exceptiones
-       pacientes.remove((id)); // tendria q ver si actualizo los id de los de la derecha corriendolos todos una posi a la izquierda o simplemente lo dejo asi y se perdio ese Long
-   }
+    @Override
+    public void eliminar(Long id){
+        pacientes.remove(id);
+    }
 
-   @Override
+    @Override
     public List<Paciente> listar(){
-       return new ArrayList<>(pacientes.values());
-   }
+        return new ArrayList<>(pacientes.values());
+    }
 
     public Paciente buscarPorDni(String dni){
-       for (Paciente p: pacientes.values()){
-           if(p.getDni().equals(dni)){
-               return p;
-           }
-       }
-       return null;
-   }
+        return pacientes.values().stream()
+                .filter(p -> p.getDni().equals(dni))
+                .findFirst()
+                .orElse(null);
+    }
 
     public List<Paciente> listarPorLocalidad(String localidad) {
-        List<Paciente> pacientesLocalidad = new ArrayList<>();
-        for (Paciente p : pacientes.values()) {
-            Domicilio dom = p.getDomicilio();
-            if (dom != null && dom.getLocalidad() != null && dom.getLocalidad().equals(localidad)) { // para evitar pacientes con Domicilio null aunque no tendria q haber ninguno null ya q uso el constructor con parametros
-                pacientesLocalidad.add(p);
-            }
-        }
-        return pacientesLocalidad;
+        return pacientes.values().stream()
+                .filter(p -> p.getDomicilio() != null)
+                .filter(p -> localidad.equals(p.getDomicilio().getLocalidad()))
+                .collect(Collectors.toList());
     }
 
     public List<Paciente> listarOrdenadosPorApellido() {
-        List<Paciente> lista = new ArrayList<>(pacientes.values());
-        lista.sort((a, b) -> a.getApellido().compareToIgnoreCase(b.getApellido()));
-        return lista;
+        return pacientes.values().stream()
+                .sorted()
+                .collect(Collectors.toList());
     }
 }

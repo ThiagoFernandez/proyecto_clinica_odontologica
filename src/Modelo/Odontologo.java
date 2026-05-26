@@ -3,8 +3,9 @@ package Modelo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import Exception.DatoInvalidoException;
 
-public abstract class Odontologo {
+public abstract class Odontologo implements Comparable<Odontologo> {
     private static Long contadorId = 1L;
 
     private Long id;
@@ -17,7 +18,7 @@ public abstract class Odontologo {
         this.id = contadorId++;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.matricula = matricula;
+        setMatricula(matricula);
     }
     public Odontologo(){
         this.id = contadorId++;
@@ -31,6 +32,15 @@ public abstract class Odontologo {
 
     public List<Turno> getTurnos() {
         return turnos;
+    }
+
+    @Override
+    public int compareTo(Odontologo otro) {
+        int comparacionApellido = this.apellido.compareToIgnoreCase(otro.apellido);
+        if (comparacionApellido != 0) {
+            return comparacionApellido;
+        }
+        return this.nombre.compareToIgnoreCase(otro.nombre);
     }
 
     public String toString(){
@@ -94,7 +104,10 @@ public abstract class Odontologo {
         this.apellido = apellido;
     }
 
-    public void setMatricula(String matricula){
+    public void setMatricula(String matricula) {
+        if (matricula == null || matricula.isBlank()) {
+            throw new DatoInvalidoException("matricula", "no puede estar vacia");
+        }
         this.matricula = matricula;
     }
 
