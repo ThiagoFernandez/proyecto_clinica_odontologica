@@ -37,6 +37,10 @@ public class Paciente implements Comparable<Paciente> {
         // lo voy a terminar usando para poder crear un paciente sin necesidad de pasarle todos los datos, y luego setearlos uno por uno con inputs
     }
 
+    public static void actualizarContadorId(Long nuevoValor) {
+        contadorId = nuevoValor;
+    }
+
     // lo agrego porque lo pidio el profesore explicitamente y respalda la relacion q mostre en el diagrama de clases
     public void agregarTurno(Turno turno) {
         this.turnos.add(turno);

@@ -26,6 +26,10 @@ public abstract class Odontologo implements Comparable<Odontologo> {
         // lo voy a terminar usando para poder crear un odontologo sin necesidad de pasarle todos los datos, y luego setearlos uno por uno con inputs
     }
 
+    public static void actualizarContadorId(Long nuevoValor) {
+        contadorId = nuevoValor;
+    }
+
     public void agregarTurno(Turno turno) { // misma logica q en Paciente
         this.turnos.add(turno);
     }

@@ -17,6 +17,10 @@ public class Domicilio {
         this.provincia = provincia;
     }
 
+    public static void actualizarContadorId(Long nuevoValor) {
+        contadorId = nuevoValor;
+    }
+
     public String toString(){
         return "Domicilio{" +
                 "id=" + id +

@@ -27,6 +27,10 @@ public class Turno implements Comparable<Turno>{
         // lo voy a terminar usando para poder crear un turno sin necesidad de pasarle todos los datos, y luego setearlos uno por uno con inputs
     }
 
+    public static void actualizarContadorId(Long nuevoValor) {
+        contadorId = nuevoValor;
+    }
+
     public String toString(){
         return "Datos del turno " + id + "\n"+
         "Paciente: " + paciente.getNombreCompleto() + "\n"+
